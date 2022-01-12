@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript" src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="repaso.js"></script>
+    <title>Ingreso de productos</title>
+</head>
+
+<body>
+    <div class="container p-5 my-3 border" style="text-align: center;">
+        <h2 class="text-center text-dark">Ingreso de Productos</h2>
+        <div>
+            <div class="container text-justify col-md-12 p-3 border">
+                <div class="row">
+                    <div class="col">
+                        <label class="h6" for="nombre" class="form-label">Nombre del Item:</label>
+                        <input type="text" name="nombre" id="nombre" class="form-control">
+                        <label class="h6 form-label" for="cantidad">Cantidad de Productos:</label>
+                        <input class="form-control" type="number" name="cantidad" id="cantidad" min="1" max="100">
+                    </div>
+                    <div class="col">
+                        <label class="h6 form-label valor-ca" for="valor">Valor Unitario:</label>
+                        <input type="number" name="valor" id="valor" class="form-control valor-ca"><br>
+                        <button class="btn btn-warning  text-dark btn-submit" onclick="guardar();">Agregar</button><br>
+                    </div>
+                </div>
+                <br><br>
+                <div id="tabla">
+
+                </div>
+                <br><br>
+                <hr>
+                <!-- <p class="h5">DESCONTAR DEL STOCK</p>
+                <div class="row">
+                    <div class="col-5">
+                        <label class="h6 form-label valor-ca" for="valor">Nombre del Producto:</label>
+                        <input type="text" name="valor" id="product" class="form-control valor-ca">
+                        <label class="h6 form-label" for="cantidad">Cantidad de Producto:</label>
+                        <input class="form-control" type="text" name="cantidad" id="cantiproduct" min="1" max="100">
+                    </div>
+                    <div><br><br>
+                        <button class="btn btn-info  text-dark btn-submit" onclick="descontar();">Descontar</button><br><br><br>
+                    </div>
+
+
+                    <br><br>
+                    <hr>
+                    <p class="h5">ELIMINAR DEL STOCK</p>
+                    <div class="row">
+                        <div class="col-5">
+                            <label class="h6 form-label valor-ca" for="nombre">Nombre del Producto:</label>
+                            <input type="text" name="nombre" id="nombreEli" class="form-control valor-ca">
+                
+                        </div>
+                        <div>
+                            <button class="btn btn-info  text-dark btn-danger" onclick="eliminar();">Eliminar Producto</button><br><br><br>
+                        </div> -->
+</body>
+
+</html>
