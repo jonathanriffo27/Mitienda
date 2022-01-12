@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript" src="bootstrap/js/bootstrap.bundle.min.js"></script>
+   <!-- <script type="text/javascript" src="repaso.js"></script> -->
+    <!-- <script type="text/javascript" src="validar.js"></script> -->
+    <title>Request</title>
+</head>
+<body>
+    <header>
+        <section class="py-5 text-center container-fluid text-white" style="background-color: #e39521;">
+            <h1>Tienda</h1>
+        </section>
+    <nav class="navbar navbar-expand-sm navbar-dark p-3" style="background: #e3721f;">
+        <div class="container-fluid">
+            <a class="navbar-brand">Mitienda</a>
+            <ul class="navbar-nav">
+                <li class="nav-item"><button type="button" class="btn btn-outline-light me-2"  onclick="ingreso();">Ingresar Producto</button></li>
+                <li class="nav-item"><button type="button" class="btn btn-outline-light me-2"  onclick="mostrar();">Mostrar Lista</button></li>
+                <li class="nav-item"><button type="button" class="btn btn-outline-light me-2"  onclick="compra();">Generar Compra</button></li>
+            </ul>
+        </div>
+    </nav>
+    </header>
+    <p id="pagina" class=" container  p-5 col-lg-8 "></p>
+    <p id="pagina2" class=" container  p-5 col-lg-8"></p>
+    <p id="comentarios"></p><br>
+
+    <script type="text/javascript">
+
+        var lista=[];
+        var lista2=[];
+        class Productos{
+            constructor(nombre, valor, cantidad){
+                this.nombre=nombre;
+                this.valor=valor;
+                this.cantidad=cantidad;
+            }
+            bruto(){
+            let res=parseInt(this.valor)*parseInt(this.cantidad);
+            return res;
+            }
+            iva(){
+            let res2=parseInt(this.bruto()*0.19);
+            return res2;
+            }
+            neto(){
+            let res3=this.bruto()*1.19;
+            return res3;
+            }
+        }
+        function ingreso(){  
+            var req=new XMLHttpRequest();
+            req.open("GET","ingreso.html",true);
+            req.onreadystatechange=function(aEvt){
+                if (req.readyState==4){
+                    if (req.status==200){
+                        document.getElementById('pagina').innerHTML=req.responseText;
+                    }else{
+                        document.getElementById('pagina').innerHTML="error de carga de pagina";
+                    }
+                }
+            };
+            req.send(null);
+            document.getElementById('comentarios').innerHTML=""; 
+        }
+        function compra(){  
+            var req=new XMLHttpRequest();
+            req.open("GET","compra.html",true);
+            req.onreadystatechange=function(aEvt){
+                if (req.readyState==4){
+                    if (req.status==200){
+                        document.getElementById('pagina').innerHTML=req.responseText;
+                    }else{
+                        document.getElementById('pagina').innerHTML="error de carga de pagina";
+                    }
+                }
+            };
+            req.send(null);
+            setTimeout(function(){
+                option();
+            },500); 
+
+        }
+        function guardar(){
+            let nombre= document.getElementById("nombre").value;
+            let valor= document.getElementById("valor").value
+            let cantidad= document.getElementById("cantidad").value
+            let obj=new Productos(nombre,valor, cantidad);
+            lista.push(obj);
+            // mostrar();
+            clear();
+            // option();
+        }
+        function clear() {
+            document.getElementById("nombre").value="";
+            document.getElementById("valor").value="";
+            document.getElementById("cantidad").value="";
+            document.getElementById("nombre").focus();
+        }
+        function mostrar(){
+            var fragmento = "";
+                fragmento="<h2 class='text-center text-dark'>Lista de Productos</h2>";
+                fragmento += "<table style='border-radius: 17px;' class='table table-hover text-center'>";
+                fragmento += "<tr class='table-warning h6'>";
+                fragmento += "<td>Nombre</td>";
+                fragmento += "<td>Valor unitario</td>";
+                fragmento += "<td>Cantidad</td>";
+                fragmento += "</tr>";
+                for (var i = 0; i < lista.length; i++) {
+                    fragmento += "<tr>";
+                    fragmento += "<td>" + lista[i].nombre + "</td>";
+                    fragmento += "<td>" + lista[i].valor + "</td>";
+                    fragmento += "<td>" + lista[i].cantidad+ "</td>";
+                    fragmento += "</tr>";
+                }
+                fragmento += "</table>";
+                document.getElementById('pagina').innerHTML = fragmento;
+                document.getElementById('comentarios').innerHTML="";
+                document.getElementById('pagina2').innerHTML="";
+        }
+        function mostrar2(){
+            let contenido="<h4 class='text-center text-dark'>Lista de Productos</h4><table style='border-radius: 17px;' class='table table-hover text-center'>";
+            contenido+="<tr class='table-warning h6'><td>Nombre</td><td>Cantidad</td><td>Valor unitario</td><td>Monto bruto</td><td>Monto neto</td></tr>";
+            for (var i = 0; i <lista2.length; i++) {
+                contenido+=  "<tr><td>"+lista2[i].nombre+
+                            "</td><td>"+lista2[i].cantidad+
+                            "</td><td>"+lista2[i].valor+
+                            "</td><td>"+lista2[i].bruto().toFixed(1)+
+                            "</td><td>"+lista2[i].neto().toFixed(1)+
+                            "</td></tr>";
+            }
+            contenido+="</table>";
+            document.getElementById('pagina2').innerHTML=contenido;
+        }
+        function agregar() {
+            let resultado="";
+            var pro = document.getElementById('option').value;
+            var cant = parseInt(document.getElementById('cantiproduct').value);
+            for (var i = 0; i < lista.length; i++) {
+                if (pro == lista[i].nombre && lista[i].cantidad >= cant) {
+                    resultado = parseInt(lista[i].cantidad) - cant; 
+                    lista[i].cantidad = resultado;
+                    let obj2=new Productos(pro,lista[i].valor,cant);
+                    let pos=existe(pro);
+                    if(pos>=0){
+                        lista2[pos].cantidad+=cant;
+                    }else{
+                        lista2.push(obj2)
+                    }
+                } else if (lista[i].cantidad < cant){
+                    alert("Cantidad superior a la existencia actual");                           
+                }
+                    
+            }
+            document.getElementById('option').value="";
+            document.getElementById('cantiproduct').value="";
+            mostrar2();
+            totales();
+        }
+        function totales(){
+            let totalbruto=0;
+            let totaliva=0;
+            let totalneto=0;
+            let neto=0;
+            for(var i=0;i<lista2.length;i++){
+                totalbruto+=lista2[i].bruto();
+                totaliva+=lista2[i].iva();
+                totalneto+=lista2[i].neto();
+            }
+            document.getElementById("comentarios").innerHTML = "<p class='container p-3' style='text-align: center;'>Monto total bruto: $"+totalbruto.toFixed(1)+"<br>Monto total IVA: $"+totaliva.toFixed(1)+"<br>Monto total neto: $"+totalneto.toFixed(1)+"</p>";
+        }
+        function totales2(){
+            let totalbruto=0;
+            let totaliva=0;
+            let totalneto=0;
+            for(var i=0;i<lista2.length;i++){
+                totalbruto+=lista2[i].bruto();
+                totaliva+=lista2[i].iva();
+                totalneto+=lista2[i].neto();
+            }
+            document.getElementById("comentarios").innerHTML = "<p class='container p-3' style='text-align: center;'>Monto total bruto: $"+totalbruto.toFixed(1)+"<br>Monto total IVA: $"+totaliva.toFixed(1)+"<br>Monto total neto: $"+totalneto.toFixed(1)+"</p>";
+        }
+        // function agregar2(){
+        //     var pro = document.getElementById('option').value;
+        //     var cant = parseInt(document.getElementById('cantiproduct').value);
+        //     let pos=existe(pro); 
+        //     if (pos>=0){
+        //         lista2[pos].nombre=pro;
+        //         lista2[pos].cantidad=parseInt(lista2[pos].cantidad)+parseInt(cant);
+        //     }else{
+        //         lista2.push(obj2);
+        //     }
+        // }
+        function existe(nom){
+            let pos=-1;
+            for(var i=0; i<lista2.length; i++){
+                if(nom==lista2[i].nombre){
+                    pos=i;
+                }
+            }
+            return pos;
+        }
+        // function existe2(nom){
+        //     let pos=-1;
+        //     for(var i=0; i<lista.length; i++){
+        //         if(nom==lista[i].nombre){
+        //             pos=i;
+        //         }
+        //     }
+        //     return pos;
+        // }
+        function option(){
+            let option="";
+            option="<select name='opciones' class='form-select'><option disabled selected>Seleccione</option>";
+            for (var i=0; i < lista.length; i++){
+                option+="<option>"+lista[i].nombre+"</option>";
+            }
+            option+="</select>";
+            document.getElementById('option').innerHTML=option;
+        }
+        function eliminar(){
+            var pro = document.getElementById('option').value;
+            let pos2=existe(pro);
+            lista2.splice(pos2,1);
+            document.getElementById('option').value="";
+            document.getElementById('cantiproduct').value="";
+            mostrar2();
+            totales();
+        }
+        function modificar(){
+            var pro = document.getElementById('option').value;
+            var cant = parseInt(document.getElementById('cantiproduct').value); 
+            let pos3=existe(pro);
+            let v2=prompt("Desea agregar o quitar productos (agregar/quitar)");
+                if(v2=="agregar"){
+                    lista2[pos3].cantidad=parseInt(lista2[pos3].cantidad)+parseInt(cant);
+                }else if(v2=="quitar"){
+                    lista2[pos3].cantidad=parseInt(lista2[pos3].cantidad)-parseInt(cant);
+                }
+                document.getElementById('option').value="";
+                document.getElementById('cantiproduct').value="";
+                mostrar2();
+                totales();
+        }
+        function descuento(){
+            let desc=prompt("Ingrese porcentaje de descuento: %");
+            let montofinal=0;
+            let totalbruto=0;
+            let totaliva=0;
+            let totalneto=0;
+            for(var i=0;i<lista2.length;i++){
+                totalbruto+=lista2[i].bruto();
+                totaliva+=lista2[i].iva();
+                totalneto+=lista2[i].neto();
+                montofinal+=lista2[i].neto();
+            }
+            let descuento=(parseFloat(montofinal)*parseFloat(desc))/100;
+            let totaldescuento=parseFloat(montofinal)-parseFloat(descuento);
+            document.getElementById("comentarios").innerHTML = "<p class='container p-3' style='text-align: center;'>Monto total bruto: $"+totalbruto.toFixed(1)+"<br>Monto total IVA: $"+totaliva.toFixed(1)+"<br>Porcentaje de descuento: %"+desc+"<br>Monto total neto: $"+totaldescuento.toFixed(1)+"</p>";
+            
+        }
+    </script>
+</body>
+</html>
+
+
