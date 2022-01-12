@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar compra</title>
+    </head>
+    <body>
+        <div class="container p-4 border" style="text-align: center;">
+            <h2 class="text-center text-dark">Venta de producto</h2>
+            <div class="row">
+                <div class="col-5">
+                    <label class="h6 form-label valor-ca" for="valor">Seleccione el articulo:</label>
+                    <select name="option" id="option" class="form-select">
+                    <option disabled selected>Seleccione</option>
+                    </select>
+                    <label class="h6 form-label" for="cantidad">Cantidad de Producto:</label>
+                    <input class="form-control" type="text" name="cantidad" id="cantiproduct" min="1" max="100">
+                </div>
+                <div><br>
+                    <button class="btn btn-warning  text-dark btn-submit" onclick="agregar();">Agregar</button>
+                    <button class="btn btn-warning  text-dark btn-submit" onclick="eliminar();">Eliminar</button>
+                    <button class="btn btn-warning  text-dark btn-submit" onclick="modificar();">Modificar</button>
+                    <button class="btn btn-warning  text-dark btn-submit" onclick="descuento();">Descuento</button><br><br>
+                </div><br><br>
+                <hr>
+            </div>
+        </div>
+
+        <!-- <script type="text/javascript">
+            function option(){
+            let option="";
+            option="<select name='opciones' class='form-select'><option disabled selected>Seleccione</option>";
+            for (var i=0; i < lista.length; i++){
+                option+="<option>"+lista[i].nombre+"</option>";
+            }
+            option+="</select>";
+            document.getElementById('option').innerHTML=option;
+        }
+        </script> -->
+</body>
+</html>
