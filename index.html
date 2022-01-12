@@ -225,11 +225,24 @@
         function eliminar(){
             var pro = document.getElementById('option').value;
             let pos2=existe(pro);
+            let resultado4="";
+            let x;
+            for (var i = 0; i < lista2.length; i++){
+                if (pro == lista2[i].nombre){
+                    x=lista2[i].cantidad;
+                }
+            }
             lista2.splice(pos2,1);
+            for (var i = 0; i < lista.length; i++) {
+                if (pro == lista[i].nombre) {
+                    resultado4 = parseInt(lista[i].cantidad) + parseInt(x); 
+                    lista[i].cantidad = resultado4;
+                    }
             document.getElementById('option').value="";
             document.getElementById('cantiproduct').value="";
             mostrar2();
             totales();
+            }
         }
         function modificar(){
             var pro = document.getElementById('option').value;
